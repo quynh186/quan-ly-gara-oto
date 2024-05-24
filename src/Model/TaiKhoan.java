@@ -9,14 +9,25 @@ package Model;
  * @author DELL Latitude
  */
 public class TaiKhoan {
+    private String id;    
     private String tenTaiKhoan;
-    private String matKhau;
-    static String quyen;
 
-    public TaiKhoan(String tenTaiKhoan, String matKhau, String quyen) {
+    private String matKhau;
+    public static String quyen;
+
+    public TaiKhoan(String id, String tenTaiKhoan, String matKhau, String quyen) {
+        this.id = id;
         this.tenTaiKhoan = tenTaiKhoan;
         this.matKhau = matKhau;        
         TaiKhoan.quyen = quyen;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     
@@ -47,8 +58,7 @@ public class TaiKhoan {
 
     @Override
     public String toString() {
-        return "TaiKhoan{" + "tenTaiKhoan=" + tenTaiKhoan + ", matKhau=" + matKhau + '}';
+        return "TaiKhoan{" + "id=" + id + ", tenTaiKhoan=" + tenTaiKhoan + ", matKhau=" + matKhau + '}';
     }
-    
     
 }

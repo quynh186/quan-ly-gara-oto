@@ -4,9 +4,9 @@
  */
 package DAO;
 
-import JdbcHelper.JdbcHelper;
-import static JdbcHelper.JdbcHelper.executeUpdate;
-import static JdbcHelper.JdbcHelper.preparedStatement;
+import JDBCHelper.JdbcHelper;
+import static JDBCHelper.JdbcHelper.executeUpdate;
+import static JDBCHelper.JdbcHelper.preparedStatement;
 import Model.TaiKhoan;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,62 +20,29 @@ import javax.swing.JOptionPane;
  * @author DELL Latitude
  */
 public class TaiKhoanDAO {
-      public List<TaiKhoan> hienDanhSachTaiKhoan() {
+
+    public List<TaiKhoan> hienDanhSachTaiKhoan() {
         String sql = "SELECT * FROM tai_khoan";
         return truyVanTaiKhoan(sql);
     }
 
-    public List<TaiKhoan> hienThiTaiKhoan(Object... args) {
-        String sql = "SELECT * FROM tai_khoan WHERE tentaikhoan = ?";
-        return truyVanTaiKhoan(sql, args);
-    }
     // Phương thức dùng để xác thực tài khoản người dùng
     public boolean dangNhap(String tenTaiKhoan, String matKhau) {
         String sql = "SELECT * FROM tai_khoan WHERE tentaikhoan = ? AND matkhau = ?"; // dấu ? dùng để xác định hai đối số tenTaiKhoan và matKhau
         return !truyVanTaiKhoan(sql, tenTaiKhoan, matKhau).isEmpty();
     }
 
-
-    public void themCanBo(String maCanBo, String hoTenKhaiSinh,
-            String gioiTinh, String ngaySinh, String tinhTrangHonNhan,
-            String soCMND, String queQuan, String noiOHienTai, String email,
-            String danToc, String tonGiao, String ngayHopDong,
-            String congViecDuocGiao, String maChucVu, String chuyenNganhDaoTao,
-            String noiDaoTao, String namTotNghiep, String trinhDoNgoaiNgu,
-            String maPhongBan, String anh, Object... args) throws SQLException {
+    public void themTaiKhoan(String tenTaiKhoan,
+            String matKhau, String quyen, Object... args) throws SQLException {
 
         String sql = """
-                     INSERT INTO canbo (
-                             macanbo,
-                             hotenkhaisinh,
-                             gioitinh,
-                             ngaysinh,
-                             tinhtranghonnhan,
-                             soCMND,
-                             quequan,
-                             noiohientai,
-                             email,
-                             dantoc,
-                             tongiao,
-                             ngayhopdong,
-                             congviecduocgiao,
-                             machucvu,
-                             chuyennganhdaotao,
-                             noidaotao,
-                             namtotnghiep,
-                             trinhdongoainnguthanhthaonhat,
-                             maphongban,
-                             anh 
-                          
-                         ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""";
+                     INSERT INTO tai_khoan (
+                             tentaikhoan,
+                             matkhau,
+                             quyen,
+                         ) VALUES(?,?,?)""";
 
-        try (PreparedStatement pstmt = preparedStatement(sql, maCanBo, hoTenKhaiSinh,
-                gioiTinh, ngaySinh, tinhTrangHonNhan,
-                soCMND, queQuan, noiOHienTai, email,
-                danToc, tonGiao, ngayHopDong,
-                congViecDuocGiao, maChucVu, chuyenNganhDaoTao,
-                noiDaoTao, namTotNghiep, trinhDoNgoaiNgu,
-                maPhongBan, anh
+        try (PreparedStatement pstmt = preparedStatement(sql, args
         )) {
             int rowsAffected = pstmt.executeUpdate();
             System.out.println(rowsAffected + " row(s) affected.");
@@ -84,60 +51,38 @@ public class TaiKhoanDAO {
         }
     }
 
-    public void suaCanBo(String maCanBo, String hoTenKhaiSinh,
-            String gioiTinh, String ngaySinh, String tinhTrangHonNhan,
-            String soCMND, String queQuan, String noiOHienTai, String email,
-            String danToc, String tonGiao, String ngayHopDong,
-            String congViecDuocGiao, String maChucVu, String chuyenNganhDaoTao,
-            String noiDaoTao, String namTotNghiep, String trinhDoNgoaiNgu,
-            String maPhongBan, String anh, Object... args) throws SQLException {
+    public void suaTaiKhoan(Object... args) throws SQLException {
 
         String sql = """
-                     UPDATE canbo 
+                     UPDATE taikhoan 
                      SET
-                     hotenkhaisinh = ?,
-                     gioitinh = ?,
-                     ngaysinh = ?,
-                     tinhtranghonnhan = ?,
-                     soCMND = ?,
-                     quequan = ?,
-                     noiohientai = ?,
-                     email = ?,
-                     dantoc = ?,
-                     tongiao = ?,
-                     ngayhopdong = ?,
-                     congviecduocgiao = ?,
-                     machucvu = ?,
-                     chuyennganhdaotao = ?,
-                     noidaotao = ?,
-                     namtotnghiep = ?,
-                     trinhdongoainnguthanhthaonhat = ?,
-                     maphongban = ?,
-                     anh = ? 
-                     WHERE macanbo = ?""";
+                     tentaikhoan = ?,
+                     matkhau = ?,
+                     quyen = ? 
+                     WHERE id = ?""";
         try {
-            executeUpdate(sql, hoTenKhaiSinh,
-                    gioiTinh, ngaySinh, tinhTrangHonNhan,
-                    soCMND, queQuan, noiOHienTai, email,
-                    danToc, tonGiao, ngayHopDong,
-                    congViecDuocGiao, maChucVu, chuyenNganhDaoTao,
-                    noiDaoTao, namTotNghiep, trinhDoNgoaiNgu,
-                    maPhongBan, anh, maCanBo
+            executeUpdate(sql, args
             );
-            JOptionPane.showMessageDialog(null, "Sửa cán bộ " + maCanBo + " thành công");
+            JOptionPane.showMessageDialog(null, "Sửa tài khoản " + args[1] + " thành công");
         } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Sửa tài khoản " + args[1] + " thất bại");
+
             System.out.println(ex.getMessage());
         }
 
     }
 
-    public void xoaCanBo(String maCanBo, Object... args) throws SQLException {
+    public void xoaTaiKhoan(String maTaiKhoan, Object... args) throws SQLException {
         String sql = """
-                      DELETE FROM canbo WHERE macanbo = ?
+                      DELETE FROM taikhoan WHERE id = ?
                      """;
         try {
-            executeUpdate(sql, maCanBo);
+            executeUpdate(sql, maTaiKhoan);
+            JOptionPane.showMessageDialog(null, "Xóa tài khoản " + args[1] + " thành công");
+
         } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Xóa tài khoản " + args[1] + " thất bại");
+
             System.out.println(ex.getMessage());
         }
 
@@ -165,25 +110,14 @@ public class TaiKhoanDAO {
     }
 
     private TaiKhoan layDuLieuTuBangTaiKhoan(ResultSet rs) throws SQLException {
-        TaiKhoan taiKhoan =
-                new TaiKhoan(
-                             rs.getString("tentaikhoan"),
-                             rs.getString("matkhau"),
-                             rs.getString("quyen")
-                            ); 
- 
+        TaiKhoan taiKhoan
+                = new TaiKhoan(
+                        rs.getString("id"),
+                        rs.getString("tentaikhoan"),
+                        rs.getString("matkhau"),
+                        rs.getString("quyen")
+                );
+
         return taiKhoan;
-    }
-    
-     public static void main(String[] args) throws SQLException {
-         TaiKhoanDAO tkDAO = new TaiKhoanDAO();
-                 
-                  
-//                  System.out.print(tkDAO.dangNhap("quynh","123"));
-
-//         for(int i = 0; i<dstaikhoan.size(); i++ ){
-//             System.out.print(dstaikhoan.get(i).toString());
-//         }
-
     }
 }

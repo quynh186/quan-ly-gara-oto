@@ -4,6 +4,7 @@
  */
 package ManHinh;
 
+import HienThiQuanLy.QuanLyTaiKhoan;
 import HienThiQuanLy.QuanLyVatTu;
 import HienThiQuanLy.TrangChu;
 import java.awt.CardLayout;
@@ -16,23 +17,30 @@ import javax.swing.SwingUtilities;
  *
  * @author DELL Latitude
  */
-public class TrangQuanLy extends javax.swing.JFrame implements ActionListener {
+public class TrangQuanLy extends javax.swing.JFrame {
 
     /**
      * Creates new form Home
      */
-    
+    private JPanel trangChu;
+    private JPanel quanLyVatTu;   
+    private JPanel quanlyTaiKhoan;
 
-    JPanel trangChu;
-    JPanel quanLyVatTu;
+    private CardLayout cardLayout;
 
     public TrangQuanLy() {
 
         initComponents();
         setLocationRelativeTo(null);
+        cardLayout = new CardLayout();
+        pnlHienThi.setLayout(cardLayout);
         trangChu = new TrangChu();
-        quanLyVatTu = new QuanLyVatTu();
-        setVisible(true);
+        quanLyVatTu = new QuanLyVatTu();        
+        quanlyTaiKhoan = new QuanLyTaiKhoan();
+
+        pnlHienThi.add(trangChu, "trangChu");
+        pnlHienThi.add(quanLyVatTu, "quanLyVatTu");        
+        pnlHienThi.add(quanlyTaiKhoan, "quanLyTaiKhoan");
 
     }
 
@@ -50,31 +58,35 @@ public class TrangQuanLy extends javax.swing.JFrame implements ActionListener {
         btnTrangChu = new javax.swing.JButton();
         btnQuanLyVatTu = new javax.swing.JButton();
         btnDichVu = new javax.swing.JButton();
-        btnTaiChinh1 = new javax.swing.JButton();
+        btnTaiChinh = new javax.swing.JButton();
         pnlHienThi = new javax.swing.JPanel();
-        quanLyVatTu2 = new HienThiQuanLy.QuanLyVatTu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         btnQuanLyTaiKhoan.setText("Quản lý tài khoản");
+        btnQuanLyTaiKhoan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnQuanLyTaiKhoanActionPerformed(evt);
+            }
+        });
 
         btnTrangChu.setText("Trang chủ");
-        btnTrangChu.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnTrangChuMouseClicked(evt);
+        btnTrangChu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTrangChuActionPerformed(evt);
             }
         });
 
         btnQuanLyVatTu.setText("Quản lý vật tư");
-        btnQuanLyVatTu.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnQuanLyVatTuMouseClicked(evt);
+        btnQuanLyVatTu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnQuanLyVatTuActionPerformed(evt);
             }
         });
 
         btnDichVu.setText("Dịch vụ");
 
-        btnTaiChinh1.setText("Quản lý tài chính");
+        btnTaiChinh.setText("Quản lý tài chính");
 
         javax.swing.GroupLayout pnlChucNangLayout = new javax.swing.GroupLayout(pnlChucNang);
         pnlChucNang.setLayout(pnlChucNangLayout);
@@ -87,7 +99,7 @@ public class TrangQuanLy extends javax.swing.JFrame implements ActionListener {
                     .addComponent(btnQuanLyTaiKhoan, javax.swing.GroupLayout.DEFAULT_SIZE, 142, Short.MAX_VALUE)
                     .addComponent(btnDichVu, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnQuanLyVatTu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnTaiChinh1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnTaiChinh, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         pnlChucNangLayout.setVerticalGroup(
@@ -100,27 +112,21 @@ public class TrangQuanLy extends javax.swing.JFrame implements ActionListener {
                 .addGap(18, 18, 18)
                 .addComponent(btnDichVu, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(btnTaiChinh1, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnTaiChinh, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnQuanLyTaiKhoan, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(266, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout pnlHienThiLayout = new javax.swing.GroupLayout(pnlHienThi);
         pnlHienThi.setLayout(pnlHienThiLayout);
         pnlHienThiLayout.setHorizontalGroup(
             pnlHienThiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlHienThiLayout.createSequentialGroup()
-                .addGap(31, 31, 31)
-                .addComponent(quanLyVatTu2, javax.swing.GroupLayout.PREFERRED_SIZE, 652, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(48, Short.MAX_VALUE))
+            .addGap(0, 757, Short.MAX_VALUE)
         );
         pnlHienThiLayout.setVerticalGroup(
             pnlHienThiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlHienThiLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(quanLyVatTu2, javax.swing.GroupLayout.PREFERRED_SIZE, 564, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGap(0, 530, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -147,70 +153,38 @@ public class TrangQuanLy extends javax.swing.JFrame implements ActionListener {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnTrangChuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnTrangChuMouseClicked
-       
-       
-    }//GEN-LAST:event_btnTrangChuMouseClicked
+    private void btnTrangChuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTrangChuActionPerformed
+         cardLayout.show(pnlHienThi, "trangChu");
+    }//GEN-LAST:event_btnTrangChuActionPerformed
 
-    private void btnQuanLyVatTuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnQuanLyVatTuMouseClicked
-       
-        
-    }//GEN-LAST:event_btnQuanLyVatTuMouseClicked
+    private void btnQuanLyVatTuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQuanLyVatTuActionPerformed
+         cardLayout.show(pnlHienThi, "quanLyVatTu");
+    }//GEN-LAST:event_btnQuanLyVatTuActionPerformed
+
+    private void btnQuanLyTaiKhoanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQuanLyTaiKhoanActionPerformed
+        cardLayout.show(pnlHienThi, "quanLyTaiKhoan");
+    }//GEN-LAST:event_btnQuanLyTaiKhoanActionPerformed
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(TrangQuanLy.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(TrangQuanLy.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(TrangQuanLy.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(TrangQuanLy.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
             public void run() {
-               SwingUtilities.invokeLater(() -> new quan_ly_gara.TrangChu());
+                new TrangQuanLy().setVisible(true);
             }
         });
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDichVu;
     private javax.swing.JButton btnQuanLyTaiKhoan;
     private javax.swing.JButton btnQuanLyVatTu;
-    private javax.swing.JButton btnTaiChinh1;
+    private javax.swing.JButton btnTaiChinh;
     private javax.swing.JButton btnTrangChu;
     private javax.swing.JPanel pnlChucNang;
     private javax.swing.JPanel pnlHienThi;
-    private HienThiQuanLy.QuanLyVatTu quanLyVatTu2;
     // End of variables declaration//GEN-END:variables
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        String command = e.getActionCommand();
-//        pnal.show(pnlHienThi, command);
-        
-
-    }
 }

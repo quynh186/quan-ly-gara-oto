@@ -4,9 +4,9 @@
  */
 package DAO;
 
-import JdbcHelper.JdbcHelper;
-import static JdbcHelper.JdbcHelper.executeUpdate;
-import static JdbcHelper.JdbcHelper.preparedStatement;
+import JDBCHelper.JdbcHelper;
+import static JDBCHelper.JdbcHelper.executeUpdate;
+import static JDBCHelper.JdbcHelper.preparedStatement;
 import Model.KhachHang;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

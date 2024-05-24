@@ -4,9 +4,9 @@
  */
 package DAO;
 
-import JdbcHelper.JdbcHelper;
-import static JdbcHelper.JdbcHelper.executeUpdate;
-import static JdbcHelper.JdbcHelper.preparedStatement;
+import JDBCHelper.JdbcHelper;
+import static JDBCHelper.JdbcHelper.executeUpdate;
+import static JDBCHelper.JdbcHelper.preparedStatement;
 import Model.KhachHang;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,12 +21,12 @@ import javax.swing.JOptionPane;
  */
 public class VatTuDAO {
       public List<KhachHang> hienDanhSachKhachHang() {
-        String sql = "SELECT * FROM canbo";
+        String sql = "SELECT * FROM vattu";
         return truyVanKhachHang(sql);
     }
 
     public List<KhachHang> hienThiCanBo(String timKiem) {
-        String sql = "{CALL tim_kiem_can_bo(?)} ";
+        String sql = "";
         return truyVanKhachHang(sql, timKiem);
     }
 
