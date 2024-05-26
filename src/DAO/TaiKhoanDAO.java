@@ -29,17 +29,21 @@ public class TaiKhoanDAO {
     // Phương thức dùng để xác thực tài khoản người dùng
     public boolean dangNhap(String tenTaiKhoan, String matKhau) {
         String sql = "SELECT * FROM tai_khoan WHERE tentaikhoan = ? AND matkhau = ?"; // dấu ? dùng để xác định hai đối số tenTaiKhoan và matKhau
-        return !truyVanTaiKhoan(sql, tenTaiKhoan, matKhau).isEmpty();
+        List<TaiKhoan> xacThuc = truyVanTaiKhoan(sql, tenTaiKhoan, matKhau);
+        if (!xacThuc.isEmpty()) {
+            TaiKhoan.isAmind = xacThuc.get(0).getQuyen();
+
+        }
+        return !xacThuc.isEmpty();
     }
 
-    public void themTaiKhoan(String tenTaiKhoan,
-            String matKhau, String quyen, Object... args) throws SQLException {
+    public void themTaiKhoan(Object... args) throws SQLException {
 
         String sql = """
                      INSERT INTO tai_khoan (
                              tentaikhoan,
                              matkhau,
-                             quyen,
+                             quyen
                          ) VALUES(?,?,?)""";
 
         try (PreparedStatement pstmt = preparedStatement(sql, args

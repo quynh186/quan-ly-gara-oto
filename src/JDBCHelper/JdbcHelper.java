@@ -8,6 +8,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -23,6 +24,10 @@ public class JdbcHelper {
     public static Connection getConnection() throws SQLException {
         return DriverManager.getConnection(DATABASE_URL, DATABASE_USER_NAME, DATABASE_PASSWORD);
     }
+    public static void main(String args[]) throws SQLException{
+        ResultSet a = (ResultSet) JdbcHelper.executeQuery("SELECT * FROM tai_khoan");
+      
+    }
 
     public static PreparedStatement preparedStatement(String sql, Object... args) throws SQLException {
         Connection connection = DriverManager.getConnection(DATABASE_URL, DATABASE_USER_NAME, DATABASE_PASSWORD);
@@ -35,6 +40,7 @@ public class JdbcHelper {
         for (int i = 0; i < args.length; i++) {
             pstmt.setObject(i + 1, args[i]);
         }
+        var i = pstmt;
         return pstmt;
     }
 
@@ -44,6 +50,7 @@ public class JdbcHelper {
                 stmt.executeUpdate();
             }
         } catch (SQLException e) {
+            
             throw new RuntimeException(e);
         }
 

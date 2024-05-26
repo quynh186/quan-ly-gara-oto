@@ -8,9 +8,12 @@ import DAO.TaiKhoanDAO;
 import Model.TaiKhoan;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.UUID;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -32,7 +35,7 @@ public class QuanLyTaiKhoan extends javax.swing.JPanel {
         cboQuyen.setModel(new DefaultComboBoxModel<>(new String[]{"Quản lý", "Nhân viên"}));
         cboQuyen.setSelectedIndex(-1);
 
-//        hienThiBangTaiKhoan();
+        hienThiBangTaiKhoan();
     }
 
     private void hienThiBangTaiKhoan() {
@@ -43,11 +46,18 @@ public class QuanLyTaiKhoan extends javax.swing.JPanel {
                 item.getId(),
                 item.getTenTaiKhoan(),
                 item.getMatKhau(),
-                TaiKhoan.quyen,});
-            danhSachTaiKhoan.clear();
-            danhSachTaiKhoan.add(item);
+                item.getQuyen()});
+         
+//            danhSachTaiKhoan.add(item);
         }
     }
+    
+     void lamSach(){
+         txtTenTaiKhoan.setText("");
+         txtMatKhau.setText("");
+          cboQuyen.setSelectedIndex(-1);
+     }
+        
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -58,6 +68,7 @@ public class QuanLyTaiKhoan extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPopupMenu2 = new javax.swing.JPopupMenu();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -177,7 +188,7 @@ public class QuanLyTaiKhoan extends javax.swing.JPanel {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(14, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -204,6 +215,9 @@ public class QuanLyTaiKhoan extends javax.swing.JPanel {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tblTaiKhoanMouseClicked(evt);
             }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                tblTaiKhoanMouseReleased(evt);
+            }
         });
         jScrollPane2.setViewportView(tblTaiKhoan);
 
@@ -225,7 +239,7 @@ public class QuanLyTaiKhoan extends javax.swing.JPanel {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 688, Short.MAX_VALUE)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(0, 126, Short.MAX_VALUE))
         );
@@ -264,17 +278,20 @@ public class QuanLyTaiKhoan extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
+        
         String tenTaiKhoan = txtTenTaiKhoan.getText();
         String matKhau = txtMatKhau.getText();
-        String quyen = cboQuyen.getName();
+         String quyen = (String) cboQuyen.getSelectedItem();
 
         if (tenTaiKhoan.equals("") || matKhau.equals("") || quyen == null) {
             JOptionPane.showMessageDialog(this, "Vui lòng nhập đầy đủ thông tin!");
         } else {
             TaiKhoanDAO taiKhoanDAO = new TaiKhoanDAO();
             try {
-                taiKhoanDAO.themTaiKhoan(tenTaiKhoan, matKhau, quyen);
-                JOptionPane.showMessageDialog(this, "Thêm Quá trình công tác của cán bộ thành công!");
+                
+                taiKhoanDAO.themTaiKhoan( tenTaiKhoan, matKhau, quyen);
+                lamSach();
+                JOptionPane.showMessageDialog(this, "Thêm tài khoản thành công!");
             } catch (SQLException ex) {
                 //Logger.getLogger(DangKyJPanel.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -295,7 +312,7 @@ public class QuanLyTaiKhoan extends javax.swing.JPanel {
             TaiKhoanDAO taiKhoanDAO = new TaiKhoanDAO();
             try {
                 taiKhoanDAO.suaTaiKhoan(tenTaiKhoan, matKhau, quyen, id);
-                JOptionPane.showMessageDialog(this, "Thêm Quá trình công tác của cán bộ thành công!");
+                JOptionPane.showMessageDialog(this, "Thêm tài khoản thành công!");
             } catch (SQLException ex) {
                 //Logger.getLogger(DangKyJPanel.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -309,6 +326,41 @@ public class QuanLyTaiKhoan extends javax.swing.JPanel {
         txtTenTaiKhoan.setText(danhSachTaiKhoan.get(i).getTenTaiKhoan());
         txtMatKhau.setText(danhSachTaiKhoan.get(i).getMatKhau());
     }//GEN-LAST:event_tblTaiKhoanMouseClicked
+
+    private void tblTaiKhoanMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblTaiKhoanMouseReleased
+         if (evt.isPopupTrigger()) {
+        JPopupMenu popupMenu = new JPopupMenu();
+        JMenuItem editItem = new JMenuItem("Edit");
+        JMenuItem deleteItem = new JMenuItem("Delete");
+        
+        editItem.addActionListener(e -> {
+            // Xử lý sự kiện sửa dòng
+            int selectedRow = tblTaiKhoan.getSelectedRow();
+            if (selectedRow != -1) {
+                // Lấy dữ liệu từ dòng được chọn và hiển thị dialog sửa
+                String id = tblTaiKhoan.getValueAt(selectedRow, 0).toString();
+                String firstName = tblTaiKhoan.getValueAt(selectedRow, 1).toString();
+                String lastName = tblTaiKhoan.getValueAt(selectedRow, 2).toString();
+                // Hiển thị dialog sửa (hoặc thực hiện hành động phù hợp)
+                JOptionPane.showMessageDialog(this, "Edit: ID = " + id + ", First Name = " + firstName + ", Last Name = " + lastName);
+            }
+        });
+        
+        deleteItem.addActionListener(e -> {
+            // Xử lý sự kiện xóa dòng
+            int selectedRow = tblTaiKhoan.getSelectedRow();
+            if (selectedRow != -1) {
+                // Xóa dòng được chọn từ model
+                ((DefaultTableModel)tblTaiKhoan.getModel()).removeRow(selectedRow);
+            }
+        });
+        
+        popupMenu.add(editItem);
+        popupMenu.add(deleteItem);
+        
+        popupMenu.show(evt.getComponent(), evt.getX(), evt.getY());
+        }
+    }//GEN-LAST:event_tblTaiKhoanMouseReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -325,6 +377,7 @@ public class QuanLyTaiKhoan extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
+    private javax.swing.JPopupMenu jPopupMenu2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable tblTaiKhoan;

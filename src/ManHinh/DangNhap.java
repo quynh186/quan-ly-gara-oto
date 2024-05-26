@@ -25,6 +25,7 @@ public class DangNhap extends javax.swing.JFrame {
         lblSaiMatKhau.setVisible(false);
   
     }
+   
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -137,7 +138,7 @@ public class DangNhap extends javax.swing.JFrame {
 
         if (taiKhoanDAO.dangNhap(txtTaiKhoan.getText(), txtMatKhau.getText())) {
             javax.swing.SwingUtilities.getWindowAncestor((java.awt.Component) evt.getSource()).dispose();
-            java.awt.EventQueue.invokeLater(new Runnable() {
+           java.awt.EventQueue.invokeLater(new Runnable() {
                 public void run() {
                     new TrangQuanLy().setVisible(true);
                 }
